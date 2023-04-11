@@ -20,6 +20,7 @@ WORKDIR /home/plugin-server/plugin-contents
 
 # Copy in plugin files and generate files.txt statically
 COPY plugin plugin
+COPY plugin/index.yaml ./
 
 RUN find plugin -type f | sort > files.txt
 
