@@ -22,6 +22,8 @@ WORKDIR /home/plugin-server/plugin-contents
 COPY plugin plugin
 COPY plugin/index.yaml ./
 
+RUN chown -R pluginserver:pluginserver /home/plugin-server/plugin-contents
+
 RUN find plugin -type f | sort > files.txt
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
