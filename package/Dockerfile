@@ -4,6 +4,10 @@ RUN zypper -n install nginx jq
 
 COPY package/nginx.conf /etc/nginx/nginx.conf
 
+# Copy in plugin files and generate files.txt statically
+COPY plugin /home/plugin-server/plugin-contents/plugin
+COPY plugin/index.yaml /home/plugin-server/plugin-contents
+
 RUN echo 'pluginserver:x:1000:1000::/home/pluginserver:/bin/bash' >> /etc/passwd && \
     echo 'pluginserver:x:1000:' >> /etc/group && \
     mkdir /home/plugin-server && \
@@ -17,12 +21,6 @@ RUN echo 'pluginserver:x:1000:1000::/home/pluginserver:/bin/bash' >> /etc/passwd
 USER pluginserver
 
 WORKDIR /home/plugin-server/plugin-contents
-
-# Copy in plugin files and generate files.txt statically
-COPY plugin plugin
-COPY plugin/index.yaml ./
-
-RUN chown -R pluginserver:pluginserver /home/plugin-server/plugin-contents
 
 RUN find plugin -type f | sort > files.txt
 
